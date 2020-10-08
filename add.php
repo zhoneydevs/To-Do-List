@@ -1,31 +1,41 @@
 <?php
 
+require_once 'DBStaticFactory.php';
+require_once 'TodoService.php';
+require_once 'TodoModel.php';
 
-
-
-$mysqli = new mysqli("localhost:3308","root","","to_do");
+$conn = new DBStaticFactory;
+$conn= $conn->con();
 
 // Chequeando conexion
-if ($mysqli -> connect_errno) {
-  echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+if (!$conn) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
   exit();
 }
 
+$id=0;
+$name= $_POST['name'];
+$user= 1;
+$done= 0;
+
+$todo= new TodoModel($id,$name,$user,$done,gmdate('Y-m-d h:i:s \G\M\T'));
+
 //Insertando items
-$sql = "INSERT INTO items (name,user,done)
-VALUES ('".$_POST['name']."',1,0)";
+$insert = "INSERT INTO items (name,user,done,created)
+          VALUES ('{$todo->getName()}','{$todo->getUser()}',
+          {$todo->getDone()},'{$todo->getCreated()}')";
 
-
-//Verificando si se agrego los datos 
-if (mysqli_query($mysqli, $sql)) {
+//Verificando si los datos fueron agregados 
+if (mysqli_query($conn, $insert)) {
   echo "New record created successfully";
 } else {
-  echo "Error: " . $sql . "<br>" . mysqli_error($mysqli);
+  echo "Error: " . $insert . "<br>" . mysqli_error($conn);
 }
 
 
 //Quedarse en la misma pagina
 header('Location: index.php');
 
-mysqli_close($mysqli);
+mysqli_close($conn);
+
 

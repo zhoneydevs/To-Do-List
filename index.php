@@ -4,6 +4,7 @@
     require_once 'DBStaticFactory.php';
 
     require_once 'TodoService.php';
+    require_once 'TodoModel.php';
 
     $user_id = $_SESSION['user_id']=1;
     
@@ -27,7 +28,7 @@
 <body>
 
     <div class="list">
-        <h1 class="header">To-do List</h1>
+        <h1 class="header">To do List</h1>
 
         <?php if (!empty($todos)):?>
         <ul class="items">
@@ -35,7 +36,7 @@
             <li>
                 <span class="item <?php echo $todo->getDone() ? 'done' : '' ?>"><?php echo $todo->getName()?></span>
                 <?php if (!$todo->getDone()):?>
-                    <a href="mark.php?as=done&item=<?php echo $todo->getId()?>" class="done-button">Mark as done</a>
+                    <a href="mark.php?as=done&item=<?php echo $todo->getId();?>" class="done-button">Mark as done</a>
                 <?php endif; ?>
             </li>
             <?php endforeach;?>
