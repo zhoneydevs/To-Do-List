@@ -27,7 +27,7 @@
 <body>
 
     <div class="list">
-        <h1 class="header">To do List</h1>
+        <h1 class="header">To-do List</h1>
 
         <?php if (!empty($todos)):?>
         <ul class="items">
